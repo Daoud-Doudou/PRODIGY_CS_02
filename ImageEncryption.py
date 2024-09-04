@@ -2,10 +2,13 @@ from PIL import Image
 import numpy as np
 
 
+
 def encrypt_image(image_path, key, output_path):
     image = Image.open(image_path)
     pixels = np.array(image)
+    print(pixels)
     encrypted_pixels = np.clip(pixels[:, :, ::-2] + key, 0, 255)
+    print(encrypted_pixels)
     encrypted_image = Image.fromarray(encrypted_pixels.astype('uint8'))
     # Convertir en mode compatible si nécessaire
     if encrypted_image.mode in ('LA', 'RGBA'):
@@ -16,7 +19,9 @@ def encrypt_image(image_path, key, output_path):
 def decrypt_image(image_path, key, output_path):
     image = Image.open(image_path)
     pixels = np.array(image)
+    print(pixels)
     pixels_origin = np.clip(pixels[:, :, ::-2] - key, 0, 255)
+    print(pixels_origin)
     decrypted_image = Image.fromarray(pixels_origin.astype('uint8'))
     if decrypted_image.mode in ('LA', 'RGBA'):
         decrypted_image = decrypted_image.convert('RGB')
